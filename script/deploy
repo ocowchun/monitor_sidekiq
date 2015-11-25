@@ -1,0 +1,5 @@
+#!/bin/sh
+cd tmp
+aws lambda update-function-code --function-name monitor_sidekiq --zip-file fileb://monitor_sidekiq.zip
+cd ..
+
