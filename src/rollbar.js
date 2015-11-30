@@ -1,9 +1,17 @@
 import {
-  ROLLBAR_TOKEN
+	ROLLBAR_TOKEN, FUNCTION_NAME
 }
 from '../config.js'
 var rollbar = require("rollbar");
-rollbar.init(ROLLBAR_TOKEN,{ environment: "production"});
+rollbar.init(ROLLBAR_TOKEN, {
+	environment: "production"
+});
 
-
-module.exports.reportMessage=rollbar.reportMessage;
+export function reportMessage(error) {
+	rollbar.handleErrorWithPayloadData(error, {
+		level: "error",
+		custom: {
+			function_name: FUNCTION_NAME
+		}
+	})
+}

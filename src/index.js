@@ -16,10 +16,13 @@ export default function(cb) {
 	getSidekiqStats(function(err, result) {
 		if (err === null) {
 			let sidekiq = result.sidekiq;
-			let limit = 100;
+			let limit = 50;
 			let {
 				enqueued, failed, processes
 			} = sidekiq;
+
+			console.log("enqueued:" + enqueued);
+			console.log("failed:" + failed);
 
 			if (enqueued > limit || failed > limit) {
 				notify({
@@ -27,8 +30,9 @@ export default function(cb) {
 					fields: {
 						enqueued, failed, processes
 					}
+				}, function() {
+					cb(null, 'success,but sidekiq has some problem :(');
 				});
-				cb(null, 'success,but sidekiq has some problem :(');
 			} else {
 				cb(null, 'success,and sidekiq works well :)');
 			}
